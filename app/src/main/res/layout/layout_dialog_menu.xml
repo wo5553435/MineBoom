@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="#FFF"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="菜单选项"
+        android:textColor="#000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#ccc" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:text="更改难度"
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/gp_clearb_levels"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+            <RadioButton
+                android:id="@+id/rb_clear_1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:text="极易"
+                android:layout_height="wrap_content"
+                />
+            <RadioButton
+                android:id="@+id/rb_clear_2"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:text="容易"
+                android:layout_height="wrap_content"
+                />
+            <RadioButton
+                android:id="@+id/rb_clear_3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:text="普通"
+                android:layout_height="wrap_content"
+                />
+            <RadioButton
+                android:id="@+id/rb_clear_4"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#000"
+                android:text="困难"
+                android:layout_height="wrap_content"
+                />
+        </RadioGroup>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="#ccc" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_clearb_restart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#FF9800"
+            android:text="重新开始"/>
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#ccc"
+            />
+        <TextView
+            android:id="@+id/tv_clearb_continue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#03A9F4"
+            android:gravity="center"
+            android:text="继续游戏"/>
+    </LinearLayout>
+</LinearLayout>

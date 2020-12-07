@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.example.myapplication.boom.view.EqualrationButton
+        android:id="@+id/boom_item_view"
+        android:layout_width="match_parent"
+        android:minHeight="10dp"
+        android:gravity="center"
+        android:background="@drawable/circle_green_bg"
+        android:text=""
+
+        android:layout_height="wrap_content" />
+</LinearLayout>
