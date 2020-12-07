@@ -62,10 +62,14 @@ class BoomAdapter(
         }
     }
 
-    inline fun onItemClick(crossinline f: (View, Int) -> Unit): BoomAdapter {
+    inline fun onItemClick(crossinline f: (View, Int) -> Unit,crossinline  foo:(View ,Int)-> Unit): BoomAdapter {
         onEventClick = object : OnEventClick() {
             override fun onItemClick(view: View, position: Int) {
                 f(view, position)
+            }
+
+            override fun onItemLongClick(view: View, position: Int) {
+                foo(view,position)
             }
         }
         return this
@@ -81,7 +85,7 @@ class BoomAdapter(
     override fun getItemCount() = datas?.size ?: 0
 
     inner class ViewHolder(itemView: View, private val onEventClick: BoomAdapter.OnEventClick?) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        RecyclerView.ViewHolder(itemView), View.OnClickListener  ,View.OnLongClickListener{
         //var tv_name:TextView?=null
         lateinit var btn: Button
 
@@ -90,6 +94,7 @@ class BoomAdapter(
             itemView?.run {
                 btn = findViewById(R.id.boom_item_view) as Button
                 btn.setOnClickListener(this@ViewHolder)
+                btn.setOnLongClickListener(this@ViewHolder)
             }
         }
 
@@ -97,10 +102,15 @@ class BoomAdapter(
             onEventClick?.onItemClick(view, adapterPosition)
         }
 
+        override fun onLongClick(v: View): Boolean {
+            onEventClick?.onItemLongClick(v,adapterPosition)
+            return true
+        }
     }
 
     abstract class OnEventClick {
         abstract fun onItemClick(view: View, position: Int)
+        abstract fun onItemLongClick(view: View,position: Int)
     }
 }
 

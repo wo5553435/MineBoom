@@ -105,6 +105,16 @@ class ClearBoomActivity : BasicActivity() {
 
                     }
                 }
+
+                override fun onItemLongClick(view: View, position: Int) {
+                    if(manager.isOver()){//结束了就不用继续了
+                        return
+                    }
+                    var item =data_boom.get(position)
+                    manager.setAreaSecurity(!item.isSecurity,item,
+                        rv_data_boomlayout.adapter as BoomAdapter
+                    )
+                }
             })
     }
 
