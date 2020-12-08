@@ -23,7 +23,7 @@ class BoomManager(var context: Context) {
     var isSecuriryStatu = false;//是否是堡垒状态
     var knowdata = ArrayList<BoomItem>()//已经完成身份验证的数据组 (弃用)
     var boomdata: ArrayList<BoomItem>? = null
-
+    var flagedMap = ArrayList<BoomItem>()
     /**
      * 随机获取雷表（保存在boommap中）
      */
@@ -126,6 +126,7 @@ class BoomManager(var context: Context) {
         allmap.clear();allmap == null
         boommap.clear();boomdata?.clear();boomdata = null
         checkarray.clear();checkedarray.clear()
+        flagedMap?.clear()
         isGameOver = false
         isSecuriryStatu = false
     }
@@ -200,8 +201,12 @@ class BoomManager(var context: Context) {
      * 将所有雷翻出来
      */
     fun showAllBoom(adapter: BoomAdapter?) {
+        adapter?.isShowOver =true
         boommap.values.forEach {
             it.isShow = true;if (adapter != null) adapter.notifyItemChanged(it.index)
+        }
+        flagedMap.forEach{
+            if(!it.isBoom&&it.isSecurity) adapter?.notifyItemChanged(it.index)
         }
 
     }
@@ -237,6 +242,11 @@ class BoomManager(var context: Context) {
      */
     fun setAreaSecurity(status: Boolean, item: BoomItem, adapter: BoomAdapter) {
         item.isSecurity = status
+        if(status){//新增
+            flagedMap.add(item)
+        }else{//移除之前有的
+            flagedMap.remove(item)
+        }
         adapter.notifyItemChanged(item.index)
     }
 

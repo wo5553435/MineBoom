@@ -25,6 +25,12 @@ class BoomAdapter(
         ), onEventClick
     )
 
+    var isShowOver =false;//是否是展示结果模式
+
+//    fun setShowOver(flag:Boolean){
+//        isShowOver=flag
+//    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads == null || payloads.size == 0)
             onBindViewHolder(holder!!, position)
@@ -40,9 +46,20 @@ class BoomAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // holder.tv_name?.text=datas[position].toString()
         datas?.get(position)?.apply {
-            if (isSecurity) {//当前是否被堡垒
-                holder.btn.text = ""
-                holder.btn.background =context.resources.getDrawable(R.drawable.ic_android_flag_24dp)
+            if (isSecurity) {//当前是否被标记
+                if(!isBoom&&isShowOver){//当前被错误标记
+                    holder.btn.text = ""
+                    holder.btn.background = context.resources.getDrawable(R.drawable.ic_android_errorflag_24dp)
+                }else {
+                    if(isShowOver){
+                        holder.btn.text = "雷"
+                        holder.btn.resources
+                    }else {
+                        holder.btn.text = ""
+                        holder.btn.background =
+                            context.resources.getDrawable(R.drawable.ic_android_flag_24dp)
+                    }
+                }
             }  else if (isShow) {//当前被翻开
                 if (isBoom) {
                     holder.btn.text = "雷"
@@ -51,15 +68,17 @@ class BoomAdapter(
                             R.drawable.background_kitkat_blue
                         ))
                 } else {
-                    holder.btn.text = if (roundCount > 0) "" + roundCount else ""
-                    holder.btn.background =
-                        context.resources.getDrawable(R.drawable.background_kitkat_white)
+                        holder.btn.text = if (roundCount > 0) "" + roundCount else ""
+                        holder.btn.background =
+                            context.resources.getDrawable(R.drawable.background_kitkat_white)
                 }
-            }  else {
-                holder.btn.text = ""
-                holder.btn.background = context.resources.getDrawable(R.drawable.circle_blue_bg)
+            }  else {//当前没有翻看过
+                    holder.btn.text = ""
+                    holder.btn.background = context.resources.getDrawable(R.drawable.circle_blue_bg)
             }
         }
+
+
     }
 
     inline fun onItemClick(crossinline f: (View, Int) -> Unit,crossinline  foo:(View ,Int)-> Unit): BoomAdapter {
