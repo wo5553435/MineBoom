@@ -107,13 +107,16 @@ class ClearBoomActivity : BasicActivity() {
                 }
 
                 override fun onItemLongClick(view: View, position: Int) {
-                    if(manager.isOver()){//结束了就不用继续了
+                    if(manager.isOver() ){//结束了就不用继续了
                         return
                     }
                     var item =data_boom.get(position)
-                    manager.setAreaSecurity(!item.isSecurity,item,
-                        rv_data_boomlayout.adapter as BoomAdapter
-                    )
+                    if(!item.isShow) {//未展示的才可以被标记
+                        manager.setAreaSecurity(
+                            !item.isSecurity, item,
+                            rv_data_boomlayout.adapter as BoomAdapter
+                        )
+                    }
                 }
             })
     }
@@ -180,4 +183,11 @@ class ClearBoomActivity : BasicActivity() {
             .subscribe(sub)
     }
 
+
+    /**
+     * 展示当前剩余雷数（l雷总数- 旗帜数目）
+     */
+    fun showRestBoomCount(){
+
+    }
 }
