@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Created by Zhoushoubiao on 20-12-4.
- * Desc:
+ * Desc: 基础类
  */
 abstract class BasicActivity : AppCompatActivity() {
     lateinit var activity: Context

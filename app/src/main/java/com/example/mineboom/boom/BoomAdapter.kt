@@ -25,6 +25,10 @@ class BoomAdapter(
         ), onEventClick
     )
 
+    fun test(){
+        
+    }
+
     var isShowOver =false;//是否是展示结果模式
 
 //    fun setShowOver(flag:Boolean){
