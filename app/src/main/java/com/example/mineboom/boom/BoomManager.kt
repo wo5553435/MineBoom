@@ -24,6 +24,7 @@ class BoomManager(var context: Context) {
     var knowdata = ArrayList<BoomItem>()//已经完成身份验证的数据组 (弃用)
     var boomdata: ArrayList<BoomItem>? = null
     var flagedMap = ArrayList<BoomItem>()
+
     /**
      * 随机获取雷表（保存在boommap中）
      */
@@ -57,52 +58,40 @@ class BoomManager(var context: Context) {
     }
 
     /**
+     * 获取周围八个点坐标（删选超框坐标）
+     */
+    fun getAroundPair(key: Pair<Int, Int>): List<Pair<Int, Int>> {
+        val rangeofX = key.first - 1..key.first + 1
+        val rangeofY = key.second - 1..key.second + 1
+        val result = mutableListOf<Pair<Int, Int>>()
+        with(result) {
+            for (i in rangeofX) {
+                for (j in rangeofY) {
+                    add(Pair(i, j))
+                }
+            }
+            filter { value -> value.first == key.first && value.second == key.second }//过滤本身
+            filter { value -> value.first < 0 || value.second < 0 }// 过滤超出最小值范围
+            filter { values -> values.first > currentlevel.xcount || values.second > currentlevel.ycount }//过滤超出最大值范围
+        }
+        return result
+    }
+
+    /**
      * 计算有雷附近8个按钮的雷数
      */
     fun Countboom() {
         for (value in boommap) {
             var x = value.key.first
             var y = value.key.second
-            with(Pair(x - 1, y - 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {// 如果没有计算过 则开始计算这个点周围雷数
-                    allmap[this]?.roundCount = getRoundBoom(x - 1, y - 1)
+            getAroundPair(value.key).forEach {
+                with(it) {
+                    if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {// 如果没有计算过 则开始计算这个点周围雷数
+                        allmap[this]?.roundCount = getRoundBoom(first, second)
+                    }
                 }
             }
-            with(Pair(x, y - 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x, y - 1)
-                }
-            }
-            with(Pair(x + 1, y - 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x + 1, y - 1)
-                }
-            }
-            with(Pair(x - 1, y)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x - 1, y)
-                }
-            }
-            with(Pair(x + 1, y)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x + 1, y)
-                }
-            }
-            with(Pair(x - 1, y + 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x - 1, y + 1)
-                }
-            }
-            with(Pair(x, y + 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x, y + 1)
-                }
-            }
-            with(Pair(x + 1, y + 1)) {
-                if (allmap.contains(this) && allmap.get(this)?.roundCount == 0) {
-                    allmap[this]?.roundCount = getRoundBoom(x + 1, y + 1)
-                }
-            }
+
         }
     }
 
@@ -131,7 +120,9 @@ class BoomManager(var context: Context) {
         isSecuriryStatu = false
     }
 
-
+    /**
+     * 初始化
+     */
     fun initBoomData() {
         getrandomBoom();
         Countboom()
@@ -201,12 +192,12 @@ class BoomManager(var context: Context) {
      * 将所有雷翻出来
      */
     fun showAllBoom(adapter: BoomAdapter?) {
-        adapter?.isShowOver =true
+        adapter?.isShowOver = true
         boommap.values.forEach {
             it.isShow = true;if (adapter != null) adapter.notifyItemChanged(it.index)
         }
-        flagedMap.forEach{
-            if(!it.isBoom&&it.isSecurity) adapter?.notifyItemChanged(it.index)
+        flagedMap.forEach {
+            if (!it.isBoom && it.isSecurity) adapter?.notifyItemChanged(it.index)
         }
 
     }
@@ -242,12 +233,20 @@ class BoomManager(var context: Context) {
      */
     fun setAreaSecurity(status: Boolean, item: BoomItem, adapter: BoomAdapter) {
         item.isSecurity = status
-        if(status){//新增
+        if (status) {//新增
             flagedMap.add(item)
-        }else{//移除之前有的
+        } else {//移除之前有的
             flagedMap.remove(item)
         }
         adapter.notifyItemChanged(item.index)
+    }
+
+
+    /**
+     * 获取当前还剩多少
+     */
+    fun getRestFlagCount() {
+
     }
 
     /**
@@ -310,7 +309,6 @@ class BoomManager(var context: Context) {
         NORMAL(20, 10, 10),
         HARD(40, 15, 15)
     }
-
 
 
     fun isOver() = isGameOver
